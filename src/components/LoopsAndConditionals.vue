@@ -1,6 +1,27 @@
 <!--
 We can render content conditionally or in a loop with the v-if and v-for directives.
 -->
+<script setup>
+import { ref } from 'vue'
+
+const show = ref(true)
+const list = ref([1, 2, 3])
+
+function addNumber(arr) {
+  if (arr.length) {
+    //https://stackoverflow.com/questions/1669190/find-the-min-max-element-of-an-array-in-javascript/1669222#1669222
+    return Math.max(...arr)+1
+  } else {
+    return 1
+  }
+}
+
+function sortNumericArr(arr) {
+  // console.log(arr)
+  list.value = arr.sort((a,b)=>a-b)   // sort numerically
+}
+</script>
+
 <template>
    <h2>
       <a href="https://vuejs.org/examples/#conditionals-and-loops" target="new">
@@ -12,7 +33,11 @@ We can render content conditionally or in a loop with the v-if and v-for directi
   <button @click="list.push(addNumber(list))">Push Number</button>
   <button @click="list.pop()">Pop Number</button>
   <button @click="list.reverse()">Reverse List</button>
-  <button @click="list.sort()">Sort List</button>
+  <!--
+  <button @click="sortNumericArr(list)">Sort List</button>
+    -->
+  <button @click="list.sort((a,b)=>a-b)">Sort List</button>
+
 
   <ul v-if="show && list.length">
     <li v-for="item of list" :key="item.indexOf">{{ item }}</li>
@@ -21,28 +46,7 @@ We can render content conditionally or in a loop with the v-if and v-for directi
   <p v-else>List is empty.</p>
 </template>
 
-<script>
-export default {
 
-    data() {
-        return {
-            show: true,
-            list: [],
-            refurl: "https://vuejs.org/examples/#conditionals-and-loops"
-        }
-    },
-    methods: {
-      addNumber(arr) {
-        if (arr.length) {
-          //https://stackoverflow.com/questions/1669190/find-the-min-max-element-of-an-array-in-javascript/1669222#1669222
-          return Math.max(...arr)+1
-        } else {
-          return 1
-        }
-      }
-    }
-}
-</script>
 
 <style scoped>
 button {

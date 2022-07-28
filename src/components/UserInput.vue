@@ -2,29 +2,22 @@
 This example demonstrates handling user input with the v-on directive.
 -->
 
-<script>
-export default {
-  // props: {
-  //   title: String,
-  //   url: String
-  // },    
-  data() {
-    return {
-      title: "Handling User Input",
-      url: "https://vuejs.org/examples/#handling-input",
-      message: 'Welcome to Vue world',
-      comment: "Awesome Vue JS"
-    }
-  },
-  methods: {
-    reverseMessage() {
-      this.message = this.message.split('').reverse().join('')
-    },
-    notify() {
-      alert('navigation was prevented.')
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('Welcome to Vue world')
+const title  = ref("Handling User Input")
+const url = ref("https://vuejs.org/examples/#handling-input")
+const comment = ref("Awesome Vue JS")
+
+function reverseMessage() {
+  message.value = message.value.split('').reverse().join('')
 }
+
+function  notify() {
+  alert('navigation was prevented.')
+}
+
 </script>
 
 <template>

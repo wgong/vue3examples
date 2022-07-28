@@ -4,20 +4,27 @@
 Select component to demo:
   <select id="select-comp" v-model="selectedComp">
     <option>HelloWorld</option>
-    <option>SimpleComponent</option>
-    <option>SimpleCounter</option>
-    <option>TempConvertor</option>
     <option>LoopsAndConditionals</option>
-    <option>AttributeBinding</option>
+
     <option>UserInput</option>
     <option>FormBindings</option>
-    <option>RandomUser</option>
+    <option>AttributeBinding</option>
+
+    <option>SimpleCounter</option>
+    <option>SimpleComponent</option>
+    <option>TempConvertor</option>
+
+
+
     <option>TodoMVC</option>
     <option>FlightBooker</option>
     <option>SimpleTimer</option>
     <option>SimpleCRUD</option>
     <option>CircleDrawer</option>
+
+    <option>RandomUser</option>
     <option>FetchGitHub</option>
+    
     <option>DemoGrid</option>
     <option>MarkdownEditor</option>
     <option>TreeView</option>

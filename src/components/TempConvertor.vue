@@ -2,24 +2,20 @@
 https://eugenkiss.github.io/7guis/tasks/#temp
 -->
 
-<script>
-export default {
-  data() {
-    return {
-      c: 0,
-      f: 32
-    }
-  },
-  methods: {
-    setC(e, c = +e.target.value) {
-      this.c = c
-      this.f = c * (9 / 5) + 32
-    },
-    setF(e, f = +e.target.value) {
-      this.f = f
-      this.c = (f - 32) * (5 / 9)
-    }
-  }
+<script setup>
+import { ref } from 'vue'
+
+const c = ref(0)
+const f = ref(32)
+
+function setC(e, v = +e.target.value) {
+  c.value = v
+  f.value = v * (9 / 5) + 32
+}
+
+function setF(e, v = +e.target.value) {
+  f.value = v
+  c.value = (v - 32) * (5 / 9)
 }
 </script>
 

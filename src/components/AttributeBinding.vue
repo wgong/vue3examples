@@ -2,7 +2,21 @@
 Here we are reactively binding element attributes / properties to the state.
 The :title syntax is short for v-bind:title.
 -->
+<script setup>
+import { ref } from 'vue'
 
+const message = ref('Hello World!')
+const isRed = ref(true)
+const color = ref('lime')
+
+function toggleRed() {
+  isRed.value = !isRed.value
+}
+
+function toggleColor() {
+  color.value = color.value === 'lime' ? 'blue' : 'lime'
+}
+</script>
 
 
 <template>
@@ -27,32 +41,11 @@ The :title syntax is short for v-bind:title.
 
   <!-- style bindings also support object and arrays -->
   <p :style="{ color }" @click="toggleColor">
-    This should be green, and should toggle between green and blue on click.
+    This should be lime, and should toggle between lime and blue on click.
   </p>
 </template>
 
-<script>
-export default {
-  props: {
-    title: String
-  },      
-  data() {
-    return {
-      message: "Learn Attribute Binding",  
-      isRed: true,
-      color: 'green'
-    }
-  },
-  methods: {
-    toggleRed() {
-      this.isRed = !this.isRed
-    },
-    toggleColor() {
-      this.color = this.color === 'green' ? 'blue' : 'green'
-    }
-  }
-}
-</script>
+
 
 <style scoped>
 .red {

@@ -2,14 +2,10 @@
 https://eugenkiss.github.io/7guis/tasks/#counter
 -->
 
-<script>
-export default {
-  data() {
-    return {
-      count: 0
-    }
-  }
-}
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
 </script>
 
 <template>

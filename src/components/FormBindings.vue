@@ -2,19 +2,15 @@
 We can create two-way bindings between state and form inputs using the v-model directive.
 -->
 
-<script>
-export default {
-  data() {
-    return {
-      text: 'Edit me',
-      checked: true,
-      checkedNames: ['Jack'],
-      picked: 'One',
-      selected: 'A',
-      multiSelected: ['A']
-    }
-  }
-}
+<script setup>
+import { ref } from 'vue'
+
+const text = ref('Edit me')
+const checked = ref(true)
+const checkedNames = ref(['Jack'])
+const picked = ref('One')
+const selected = ref('A')
+const multiSelected = ref(['A'])
 </script>
 
 <template>
@@ -26,11 +22,13 @@ export default {
     </h2> 
 
   <h3>Text Input</h3>
-  <input v-model="text"> <br>{{ text }}
+  <input v-model="text"> 
+  <br>{{ text }}
 
   <h3>Checkbox</h3>
   <input type="checkbox" id="checkbox" v-model="checked">
-  <label for="checkbox">Checked: {{ checked }}</label>
+  <label for="checkbox"></label>
+  <br>Checked: {{ checked }}
 
   <!--
     multiple checkboxes can bind to the same
@@ -61,7 +59,7 @@ export default {
     <option>B</option>
     <option>C</option>
   </select>
-  <span>Selected: {{ selected }}</span>
+  <br><span>Selected: {{ selected }}</span>
 
   <h3>Multi Select</h3>
   <select v-model="multiSelected" multiple style="width:100px">
@@ -69,5 +67,5 @@ export default {
     <option>B</option>
     <option>C</option>
   </select>
-  <span>Selected: {{ multiSelected }}</span>
+  <br><span>Selected: {{ multiSelected }}</span>
 </template>
