@@ -2,64 +2,60 @@
 https://eugenkiss.github.io/7guis/tasks/#circle
 -->
 
-<script>
-function clone(circles) {
-  return circles.map((c) => ({ ...c }))
+<script setup>
+import { ref, shallowReactive, toRaw } from 'vue'
+
+const history = shallowReactive([[]])
+const index = ref(0)
+const circles = ref([])
+const selected = ref()
+const adjusting = ref(false)
+
+function onClick({ clientX: x, clientY: y }) {
+  if (adjusting.value) {
+    adjusting.value = false
+    selected.value = null
+    push()
+    return
+  }
+
+  selected.value = circles.value.find(({ cx, cy, r }) => {
+    const dx = cx - x
+    const dy = cy - y
+    return Math.sqrt(dx * dx + dy * dy) <= r
+  })
+
+  if (!selected.value) {
+    circles.value.push({
+      cx: x,
+      cy: y,
+      r: 50
+    })
+    push()
+  }
 }
 
-export default {
-  data() {
-    return {
-      history: [[]],
-      index: 0,
-      circles: [],
-      selected: null,
-      adjusting: false
-    }
-  },
-  methods: {
-    onClick({ clientX: x, clientY: y }) {
-      if (this.adjusting) {
-        this.adjusting = false
-        this.selected = null
-        this.push()
-        return
-      }
+function adjust(circle) {
+  selected.value = circle
+  adjusting.value = true
+}
 
-      this.selected = this.circles.find(({ cx, cy, r }) => {
-        const dx = cx - x
-        const dy = cy - y
-        return Math.sqrt(dx * dx + dy * dy) <= r
-      })
+function push() {
+  history.length = ++index.value
+  history.push(clone(circles.value))
+  console.log(toRaw(history))
+}
 
-      if (!this.selected) {
-        this.circles.push({
-          cx: x,
-          cy: y,
-          r: 50
-        })
-        this.push()
-      }
-    },
+function undo() {
+  circles.value = clone(history[--index.value])
+}
 
-    adjust(circle) {
-      this.selected = circle
-      this.adjusting = true
-    },
+function redo() {
+  circles.value = clone(history[++index.value])
+}
 
-    push() {
-      this.history.length = ++this.index
-      this.history.push(clone(this.circles))
-    },
-
-    undo() {
-      this.circles = clone(this.history[--this.index])
-    },
-
-    redo() {
-      this.circles = clone(this.history[++this.index])
-    }
-  }
+function clone(circles) {
+  return circles.map((c) => ({ ...c }))
 }
 </script>
 

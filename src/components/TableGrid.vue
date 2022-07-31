@@ -1,49 +1,46 @@
-<script>
-export default {
-  name: 'TableGrid',
-  props: {
-    data: Array,
-    columns: Array,
-    filterKey: String
-  },
-  data() {
-    return {
-      sortKey: '',
-      sortOrders: this.columns.reduce((o, key) => ((o[key] = 1), o), {})
-    }
-  },
-  computed: {
-    filteredData() {
-      const sortKey = this.sortKey
-      const filterKey = this.filterKey && this.filterKey.toLowerCase()
-      const order = this.sortOrders[sortKey] || 1
-      let data = this.data
-      if (filterKey) {
-        data = data.filter((row) => {
-          return Object.keys(row).some((key) => {
-            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-          })
-        })
-      }
-      if (sortKey) {
-        data = data.slice().sort((a, b) => {
-          a = a[sortKey]
-          b = b[sortKey]
-          return (a === b ? 0 : a > b ? 1 : -1) * order
-        })
-      }
-      return data
-    }
-  },
-  methods: {
-    sortBy(key) {
-      this.sortKey = key
-      this.sortOrders[key] = this.sortOrders[key] * -1
-    },
-    capitalize(str) {
-      return str.charAt(0).toUpperCase() + str.slice(1)
-    }
+<script setup>
+import { ref, computed } from 'vue'
+
+const props = defineProps({
+  data: Array,
+  columns: Array,
+  filterKey: String
+})
+
+const sortKey = ref('')
+const sortOrders = ref(
+  props.columns.reduce((o, key) => ((o[key] = 1), o), {})
+)
+
+const filteredData = computed(() => {
+  let { data, filterKey } = props
+  if (filterKey) {
+    filterKey = filterKey.toLowerCase()
+    data = data.filter((row) => {
+      return Object.keys(row).some((key) => {
+        return String(row[key]).toLowerCase().indexOf(filterKey) > -1
+      })
+    })
   }
+  const key = sortKey.value
+  if (key) {
+    const order = sortOrders.value[key]
+    data = data.slice().sort((a, b) => {
+      a = a[key]
+      b = b[key]
+      return (a === b ? 0 : a > b ? 1 : -1) * order
+    })
+  }
+  return data
+})
+
+function sortBy(key) {
+  sortKey.value = key
+  sortOrders.value[key] *= -1
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 </script>
 
@@ -51,7 +48,7 @@ export default {
   <table v-if="filteredData.length">
     <thead>
       <tr>
-        <th v-for="key in columns" :key="key"
+        <th v-for="key in columns"
           @click="sortBy(key)"
           :class="{ active: sortKey == key }">
           {{ capitalize(key) }}
@@ -61,8 +58,8 @@ export default {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="entry in filteredData" :key="entry">
-        <td v-for="key in columns" :key="key">
+      <tr v-for="entry in filteredData">
+        <td v-for="key in columns">
           {{entry[key]}}
         </td>
       </tr>

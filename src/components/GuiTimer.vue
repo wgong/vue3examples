@@ -2,28 +2,25 @@
 https://eugenkiss.github.io/7guis/tasks/#timer
 -->
 
-<script>
-export default {
-  data() {
-    return {
-      duration: 5 * 1000,
-      elapsed: 0
-    }
-  },
-  created() {
-    let lastTime = performance.now()
-    const update = () => {
-      const time = performance.now()
-      this.elapsed += Math.min(time - lastTime, this.duration - this.elapsed)
-      lastTime = time
-      this.handle = requestAnimationFrame(update)
-    }
-    update()
-  },
-  unmounted() {
-    cancelAnimationFrame(this.handle)
-  }
+<script setup>
+import { ref, onUnmounted } from 'vue'
+
+const duration = ref(15 * 10)
+const elapsed = ref(0)
+
+let lastTime = performance.now()
+let handle
+const update = () => {
+  const time = performance.now()
+  elapsed.value += Math.min(time - lastTime, duration.value - elapsed.value)
+  lastTime = time
+  handle = requestAnimationFrame(update)
 }
+
+update()
+onUnmounted(() => {
+  cancelAnimationFrame(handle)
+})
 </script>
 
 <template>

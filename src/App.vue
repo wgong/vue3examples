@@ -1,7 +1,71 @@
+<script>
+/* DEBUG
+
+*/
+import TreeView from './components/TreeView.vue' 
+import MarkdownEditor from './components/MarkdownEditor.vue'
+
+import HelloWorld from './components/HelloWorld.vue'
+import GuiCounter from './components/GuiCounter.vue'
+import GuiCells from './components/GuiCells.vue'
+import GuiTempConverter from './components/GuiTempConverter.vue'
+import AttributeBinding from './components/AttributeBinding.vue'
+import LoopsAndConditionals from './components/LoopsAndConditionals.vue'
+import UserInput from './components/UserInput.vue'
+import FormBindings from './components/FormBindings.vue'
+import SimpleComponent from './components/SimpleComponent.vue'
+import RandomUser from './components/RandomUser.vue'
+import TodoMVC from './components/TodoMVC.vue'
+import TodoMVC2 from './components/TodoMVC2.vue'
+import GuiFlightBooker from './components/GuiFlightBooker.vue'
+import GuiTimer from './components/GuiTimer.vue'
+import GuiCRUD from './components/GuiCRUD.vue'
+import GuiCircleDrawer from './components/GuiCircleDrawer.vue'
+import FetchGitHub from './components/FetchGitHub.vue'
+import SimpleGrid from './components/SimpleGrid.vue'
+
+
+
+export default {
+  name: 'App',
+  data() {
+    return {
+      selectedComp: "HelloWorld",
+    }
+  },
+  components: {
+    /* DEBUG
+
+
+    */
+    TreeView,
+    MarkdownEditor,
+    AttributeBinding,
+    LoopsAndConditionals,
+    UserInput,
+    FormBindings,
+    SimpleComponent,
+    RandomUser,
+    TodoMVC,
+    TodoMVC2,
+    GuiCircleDrawer,
+    FetchGitHub,
+    SimpleGrid,
+    GuiFlightBooker,
+    GuiTimer,
+    GuiCRUD,
+    GuiCounter,
+    GuiCells,
+    GuiTempConverter,
+    HelloWorld,
+  }
+}
+</script>
+
 <template>
 <h2>Vue-3 Examples</h2>
 <div>
-Select component to demo:
+Select component to demo (suffix 2 for options API):
   <select id="select-comp" v-model="selectedComp">
     <option>HelloWorld</option>
     <option>LoopsAndConditionals</option>
@@ -10,24 +74,26 @@ Select component to demo:
     <option>FormBindings</option>
     <option>AttributeBinding</option>
 
-    <option>SimpleCounter</option>
     <option>SimpleComponent</option>
-    <option>TempConvertor</option>
-
-
+    <option>SimpleGrid</option>
 
     <option>TodoMVC</option>
-    <option>FlightBooker</option>
-    <option>SimpleTimer</option>
-    <option>SimpleCRUD</option>
-    <option>CircleDrawer</option>
+    <option>TodoMVC2</option>
 
     <option>RandomUser</option>
     <option>FetchGitHub</option>
     
-    <option>DemoGrid</option>
     <option>MarkdownEditor</option>
     <option>TreeView</option>
+
+    <option>GuiCounter</option>
+    <option>GuiCells</option>
+    <option>GuiTempConverter</option>
+    <option>GuiTimer</option>
+    <option>GuiFlightBooker</option>
+    <option>GuiCRUD</option>
+    <option>GuiCircleDrawer</option>
+
 
 <!--  DEBUG
 
@@ -40,8 +106,9 @@ Select component to demo:
 
 
 
-  <SimpleCounter v-if="selectedComp === 'SimpleCounter'"/>
-  <TempConvertor v-else-if="selectedComp === 'TempConvertor'"/>
+  <GuiCounter v-if="selectedComp === 'GuiCounter'"/>
+  <GuiCells v-if="selectedComp === 'GuiCells'"/>
+  <GuiTempConverter v-else-if="selectedComp === 'GuiTempConverter'"/>
   <AttributeBinding v-else-if="selectedComp === 'AttributeBinding'"/>
   <LoopsAndConditionals v-else-if="selectedComp === 'LoopsAndConditionals'"/>
   <UserInput v-else-if="selectedComp === 'UserInput'" />
@@ -49,12 +116,13 @@ Select component to demo:
   <SimpleComponent v-else-if="selectedComp === 'SimpleComponent'"/>
   <RandomUser v-else-if="selectedComp === 'RandomUser'"/>
   <TodoMVC v-else-if="selectedComp === 'TodoMVC'"/>
-  <FlightBooker v-else-if="selectedComp === 'FlightBooker'"/>
-  <SimpleTimer v-else-if="selectedComp === 'SimpleTimer'"/>
-  <SimpleCRUD v-else-if="selectedComp === 'SimpleCRUD'"/>
-  <CircleDrawer v-else-if="selectedComp === 'CircleDrawer'"/>
+  <TodoMVC2 v-else-if="selectedComp === 'TodoMVC2'"/>
+  <GuiFlightBooker v-else-if="selectedComp === 'GuiFlightBooker'"/>
+  <GuiTimer v-else-if="selectedComp === 'GuiTimer'"/>
+  <GuiCRUD v-else-if="selectedComp === 'GuiCRUD'"/>
+  <GuiCircleDrawer v-else-if="selectedComp === 'GuiCircleDrawer'"/>
   <FetchGitHub v-else-if="selectedComp === 'FetchGitHub'"/>
-  <DemoGrid v-else-if="selectedComp === 'DemoGrid'"/> 
+  <SimpleGrid v-else-if="selectedComp === 'SimpleGrid'"/> 
   <MarkdownEditor v-else-if="selectedComp === 'MarkdownEditor'"/> 
 
   <TreeView v-else-if="selectedComp === 'TreeView'"/>   
@@ -80,65 +148,7 @@ Select component to demo:
 
 </template>
 
-<script>
-/* DEBUG
 
-*/
-import TreeView from './components/TreeView.vue' 
-import MarkdownEditor from './components/MarkdownEditor.vue'
-
-import HelloWorld from './components/HelloWorld.vue'
-import SimpleCounter from './components/SimpleCounter.vue'
-import TempConvertor from './components/TempConvertor.vue'
-import AttributeBinding from './components/AttributeBinding.vue'
-import LoopsAndConditionals from './components/LoopsAndConditionals.vue'
-import UserInput from './components/UserInput.vue'
-import FormBindings from './components/FormBindings.vue'
-import SimpleComponent from './components/SimpleComponent.vue'
-import RandomUser from './components/RandomUser.vue'
-import TodoMVC from './components/TodoMVC.vue'
-import FlightBooker from './components/FlightBooker.vue'
-import SimpleTimer from './components/SimpleTimer.vue'
-import SimpleCRUD from './components/SimpleCRUD.vue'
-import CircleDrawer from './components/CircleDrawer.vue'
-import FetchGitHub from './components/FetchGitHub.vue'
-import DemoGrid from './components/DemoGrid.vue'
-
-
-
-export default {
-  name: 'App',
-  data() {
-    return {
-      selectedComp: "HelloWorld",
-    }
-  },
-  components: {
-    /* DEBUG
-
-
-    */
-    TreeView,
-    MarkdownEditor,
-    AttributeBinding,
-    LoopsAndConditionals,
-    UserInput,
-    FormBindings,
-    SimpleComponent,
-    RandomUser,
-    TodoMVC,
-    CircleDrawer,
-    FetchGitHub,
-    DemoGrid,
-    FlightBooker,
-    SimpleTimer,
-    SimpleCRUD,
-    SimpleCounter,
-    TempConvertor,
-    HelloWorld,
-  }
-}
-</script>
 
 <style scoped>
 #app {

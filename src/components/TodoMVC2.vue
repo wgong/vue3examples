@@ -3,9 +3,7 @@ A fully spec-compliant TodoMVC implementation
 https://todomvc.com/
 -->
 
-<script setup>
-import { ref, computed, watchEffect } from 'vue'
-
+<script>
 const STORAGE_KEY = 'vue-todomvc'
 
 const filters = {
@@ -14,74 +12,97 @@ const filters = {
   completed: (todos) => todos.filter((todo) => todo.completed)
 }
 
-// state
-const todos = ref(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'))
-const visibility = ref('all')
-const editedTodo = ref()
+export default {
+  // app initial state
+  data: () => ({
+    todos: JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'),
+    visibility: 'all',
+    editedTodo: null,
+  }),
 
-// derived state
-const filteredTodos = computed(() => filters[visibility.value](todos.value))
-const remaining = computed(() => filters.active(todos.value).length)
+  computed: {
+    filteredTodos() {
+      return filters[this.visibility](this.todos)
+    },
+    remaining() {
+      return filters.active(this.todos).length
+    }
+  },
 
-// handle routing
-window.addEventListener('hashchange', onHashChange)
-onHashChange()
+  mounted() {
+    window.addEventListener('hashchange', this.onHashChange)
+    this.onHashChange()
+  },
 
-// persist state
-watchEffect(() => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(todos.value))
-})
+  // watch todos change for localStorage persistence
+  watch: {
+    todos: {
+      handler(todos) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+      },
+      deep: true
+    }
+  },
 
-function toggleAll(e) {
-  todos.value.forEach((todo) => (todo.completed = e.target.checked))
-}
 
-function addTodo(e) {
-  const value = e.target.value.trim()
-  if (value) {
-    todos.value.push({
-      id: Date.now(),
-      title: value,
-      completed: false
-    })
-    e.target.value = ''
-  }
-}
+  // methods that implement data logic.
+  // note there's no DOM manipulation here at all.
+  methods: {
+    toggleAll(e) {
+      this.todos.forEach((todo) => (todo.completed = e.target.checked))
+    },
 
-function removeTodo(todo) {
-  todos.value.splice(todos.value.indexOf(todo), 1)
-}
+    addTodo(e) {
+      const value = e.target.value.trim()
+      if (!value) {
+        return
+      }
+      this.todos.push({
+        id: Date.now(),
+        title: value,
+        completed: false
+      })
+      e.target.value = ''
+    },
 
-let beforeEditCache = ''
-function editTodo(todo) {
-  beforeEditCache = todo.title
-  editedTodo.value = todo
-}
+    removeTodo(todo) {
+      this.todos.splice(this.todos.indexOf(todo), 1)
+    },
 
-function cancelEdit(todo) {
-  editedTodo.value = null
-  todo.title = beforeEditCache
-}
+    editTodo(todo) {
+      this.beforeEditCache = todo.title
+      this.editedTodo = todo
+    },
 
-function doneEdit(todo) {
-  if (editedTodo.value) {
-    editedTodo.value = null
-    todo.title = todo.title.trim()
-    if (!todo.title) removeTodo(todo)
-  }
-}
+    doneEdit(todo) {
+      if (!this.editedTodo) {
+        return
+      }
+      this.editedTodo = null
+      todo.title = todo.title.trim()
+      if (!todo.title) {
+        this.removeTodo(todo)
+      }
+    },
 
-function removeCompleted() {
-  todos.value = filters.active(todos.value)
-}
+    cancelEdit(todo) {
+      this.editedTodo = null
+      todo.title = this.beforeEditCache
+    },
 
-function onHashChange() {
-  const route = window.location.hash.replace(/#\/?/, '')
-  if (filters[route]) {
-    visibility.value = route
-  } else {
-    window.location.hash = ''
-    visibility.value = 'all'
+    removeCompleted() {
+      this.todos = filters.active(this.todos)
+    },
+
+    onHashChange() {
+      var visibility = window.location.hash.replace(/#\/?/, '')
+      if (filters[visibility]) {
+        this.visibility = visibility
+      } else {
+        window.location.hash = ''
+        this.visibility = 'all'
+      }
+    }
   }
 }
 </script>
@@ -93,7 +114,8 @@ function onHashChange() {
       <a href="https://vuejs.org/examples/#todomvc" target="new">
         TodoMVC
       </a>
-    </h1> 
+    </h1>         
+
       <input
         class="new-todo"
         autofocus
@@ -158,6 +180,11 @@ function onHashChange() {
   </section>
 </template>
 
-<style>
+<style scoped>
 @import "https://unpkg.com/todomvc-app-css@2.4.1/index.css";
+/* https://blog.hubspot.com/website/remove-underline-from-links-css */
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }
 </style>
